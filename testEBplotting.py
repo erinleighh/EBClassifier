@@ -80,7 +80,7 @@ def makegraph(xaxis, yaxis, xlabels, ylabels, lbl, color, marker=None, size=None
     return ax
 
 # data = pd.read_csv('EBresults.csv')
-data = pd.read_csv('vettedNotInPrsa.csv')
+data = pd.read_csv('justInverted.csv')
 objects = data['Obj ID'].drop_duplicates()
 periods = pd.DataFrame(columns=['TIC', 'RA', 'DEC', 'BLS Max Power', 'BLS Best Period', 
                                 'ACF Max Power', 'ACF Best Period'])
@@ -104,7 +104,7 @@ for objName in objects:
         fitsTable.close()
 
         sector = re.search(r"sector\d+", file).group().replace('sector', '')
-        title = 'Light Curve for ' + objName + '\n' + file.replace('/astro/store/epyc2/projects2/tess/', '')
+        title = 'Light Curve for ' + objName + '\n' 
 
         figName = objName + "_" + sector + ".png"
 
@@ -136,7 +136,8 @@ for objName in objects:
                 pass
 
         curveData = curveData.dropna(subset=['TIME']).dropna(subset=['PDCSAP_FLUX']).copy()
-        fluxMed = np.abs(np.nanmedian(curveData['PDCSAP_FLUX']))
+        fluxMed = np.nanmedian(curveData['PDCSAP_FLUX'])
+        print(fluxMed)
         curveData['REL_FLUX'] = curveData['PDCSAP_FLUX'].div(fluxMed)
         curveData['REL_FLUX_ERR'] = curveData['PDCSAP_FLUX_ERR'].div(fluxMed)
 
