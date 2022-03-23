@@ -136,7 +136,10 @@ for objName in objects:
                 pass
 
         curveData = curveData.dropna(subset=['TIME']).dropna(subset=['PDCSAP_FLUX']).copy()
-        fluxMed = np.nanmedian(curveData['PDCSAP_FLUX'])
+        fluxMed = np.abs(np.nanmedian(curveData['PDCSAP_FLUX']))
+        if (np.nanmedian(curveData['PDCSAP_FLUX']) < 0):
+            print('I AM A LIGHT CURVE WHOSE RELATIVE FLUX WILL BE FLIPPED!!!!')
+            print(objName)
         curveData['REL_FLUX'] = curveData['PDCSAP_FLUX'].div(fluxMed)
         curveData['REL_FLUX_ERR'] = curveData['PDCSAP_FLUX_ERR'].div(fluxMed)
 
